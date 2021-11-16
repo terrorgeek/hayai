@@ -1,5 +1,9 @@
 # hayai README
 
+Commands(cmd + shift + P):
+1, setup tabs navigation
+2, setup drawer navigation
+
 This is the README for your extension "hayai". After writing up a brief description, we recommend including the following sections.
 
 ## Features
