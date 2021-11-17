@@ -3,6 +3,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
+const StatesExtractor = require('./SharedUtils/StatesExtractor');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -81,7 +82,9 @@ function activate(context) {
 			prompt: "Put what you want to create here:",
 			value: ''
 		});
-		console.log("Your input is: ", input);
+
+		const data = await StatesExtractor.extractStates(input);
+		console.log(data);
 
 		const MedicationModule = require('./MedicationModule');
 
