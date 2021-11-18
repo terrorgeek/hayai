@@ -4,6 +4,8 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 const StatesExtractor = require('./SharedUtils/StatesExtractor');
+const FileFolderUtils = require('./SharedUtils/FileFolderUtils');
+const ModuleTemplate = require('./ModuleTemplate/ConstructModule');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -73,32 +75,30 @@ function activate(context) {
 		    return vscode.window.showErrorMessage('Please open a project folder first');
 		}
 
-		const folderPath = vscode.workspace.workspaceFolders[0].uri
-			.toString()
-			.split(':')[1];
+		const folderPath = vscode.workspace.workspaceFolders[0].uri.toString().split(':')[1];
 
 		const input = await vscode.window.showInputBox({
-			placeHolder: "Put whay you wanna create here...",
-			prompt: "Put what you want to create here:",
+			placeHolder: "Put the class name and its states here...",
+			prompt: "Put the class name and its states here...",
 			value: ''
 		});
 
 		const data = await StatesExtractor.extractStates(input);
-		console.log(data);
+		const json = JSON.parse(data.choices[0].text.trim());
+		console.log(json);
+		const className = json.className
+		const states = json.states
 
-		const MedicationModule = require('./MedicationModule');
+	});
 
-		fs.writeFile(path.join(folderPath, 'Medications.js'), MedicationModule.code, (err) => {
-			if (err) {
-				return vscode.window.showErrorMessage('Failed to create boilerplate file!');
-			}
-			vscode.window.showInformationMessage('Created medications boilerplate files');
-		});
+	let disposable4 = vscode.commands.registerCommand('hayai.test', async function () {
+		FileFolderUtils.getFolders();
 	});
 
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(disposable2);
 	context.subscriptions.push(disposable3);
+	context.subscriptions.push(disposable4);
 }
 
 // this method is called when your extension is deactivated

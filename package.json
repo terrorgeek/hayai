@@ -26,6 +26,10 @@
 			{
 				"command": "hayai.createModule",
 				"title": "create a module"
+			},
+			{
+				"command": "hayai.test",
+				"title": "test"
 			}
 		]
 	},

@@ -1,3 +1,3 @@
 module.exports = {
-    statesPreset: `Create a class called Medications with the states as name, date and dob\nThe class name and the states are: {className: \"Medications\", states: \"name\", \"date\", \"dob\"}\n\nCreate a module named Immunizations with states vaccine_name, trade_name, immunizationDate, vaccine_lot\nThe class name and the states are: {className: \"Immunizations\", states: \"vaccine_name\", \"trade_name\", \"immunizationDate\", \"vaccine_lot\"}\n\n`
+    statesPreset: `Create a class called Medications with the states as name, date and dob\nThe class name and the states are: {\"className\": \"Medications\", \"states\": [\"name\", \"date\", \"dob\"]}\n\nCreate a module named Immunizations with states vaccine_name, trade_name, immunizationDate, vaccine_lot\nThe class name and the states are: {\"className\": \"Immunizations\", \"states\": [\"vaccine_name\", \"trade_name\", \"immunizationDate\", \"vaccine_lot\"]}\n\n`
 }
