@@ -1,6 +1,7 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const Constants = require('../Constants');
+const path = require('path');
 
 module.exports = {
     getFolders: function () {
@@ -16,12 +17,19 @@ module.exports = {
         })
         return folders
     },
-    writeFile: function (path, newFileName, content) {
-        fs.writeFile(path.join(path, newFileName), content, (err) => {
+    writeFile: function (folderPath, newFileName, content) {
+        fs.writeFile(path.join(folderPath, newFileName), content, (err) => {
 			if (err) {
 				return vscode.window.showErrorMessage('Failed to create boilerplate file!');
 			}
 			vscode.window.showInformationMessage('Created medications boilerplate files');
 		});
+    },
+    createPackageDotJSONFile: function (folderPath, newFileName, name) {
+        //name is like "@utils" or so
+        const content = `{
+                             "name": "${name}"
+                         }`
+        this.writeFile(folderPath, newFileName, content)
     }
 }

@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const StatesExtractor = require('./SharedUtils/StatesExtractor');
 const FileFolderUtils = require('./SharedUtils/FileFolderUtils');
-const ModuleTemplate = require('./ModuleTemplate/ConstructModule');
+const ConstructModule = require('./ModuleTemplate/ConstructModule');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -75,7 +75,7 @@ function activate(context) {
 		    return vscode.window.showErrorMessage('Please open a project folder first');
 		}
 
-		const folderPath = vscode.workspace.workspaceFolders[0].uri.toString().split(':')[1];
+		const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(':')[1];
 
 		const input = await vscode.window.showInputBox({
 			placeHolder: "Put the class name and its states here...",
@@ -88,12 +88,14 @@ function activate(context) {
 		console.log(json);
 		const className = json.className
 		const states = json.states
-
+		ConstructModule.assemblyLine(workspaceFolders, className, states)
 	});
 
 	let disposable4 = vscode.commands.registerCommand('hayai.test', async function () {
 		FileFolderUtils.getFolders();
 	});
+
+
 
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(disposable2);
