@@ -18,7 +18,7 @@ module.exports = {
         //Create the folder name first, e.g. Medications
         const moduleFolderName = `${workspaceRootPath}/${Constants.SrcFolderName}/${className}`
         fs.mkdirSync(moduleFolderName)
-        const filesNeedToBeCreated = [`${className}Details`, `index`, `styles`]
+        const filesNeedToBeCreated = [`${className}Details`, `index`]
         for (const file of filesNeedToBeCreated) {
             var content = '';
             if (file.includes('Details')) {
