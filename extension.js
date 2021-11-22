@@ -83,6 +83,11 @@ function activate(context) {
 			value: ''
 		});
 
+		if (!input || input.trim().length == 0) {
+			vscode.window.showErrorMessage('Please input something to make it work :)')
+			return
+		}
+
 		const data = await StatesExtractor.extractStates(input);
 		const json = JSON.parse(data.choices[0].text.trim());
 		console.log(json);

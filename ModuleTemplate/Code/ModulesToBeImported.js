@@ -6,6 +6,6 @@ module.exports = {
         `import axios from "axios"`,
         `import Constants from "../../utils/Constants"`,
         `import simpleStore from "react-native-simple-store"`,
-        `import { Stack, Input, Center, NativeBaseProvider } from "native-base"`
+        `import { Stack, Button, Input, Center, NativeBaseProvider } from "native-base"`
     ]
 }

@@ -51,6 +51,6 @@
 	},
 	"dependencies": {
 		"axios": "^0.24.0",
-		"underscore": "^1.13.1"
+		"lodash": "^4.17.21"
 	}
 }
