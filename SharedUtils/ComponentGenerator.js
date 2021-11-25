@@ -2,6 +2,7 @@ module.exports = {
     createNativeBaseInput: function (variant='outline', placeholder='Placeholder') {
         return `<Input variant="${variant}" placeholder="${placeholder}" />`
     },
+
     createNativeBaseDateTimeInput: function(placeholder, buttonTitle, mode, stateDate, stateOpen) {
         return `
             <HStack space={3} alignItems="center">
@@ -24,6 +25,7 @@ module.exports = {
             </HStack>
         `
     },
+
     createNativeBaseRadioInput: function (title, items, state) {
         //options should be like: 
         //[{label: 'Male', value: 'M'}, {label: 'Female', value: 'F'}, ......]
@@ -47,10 +49,24 @@ module.exports = {
             </HStack>
         `
     },
+
     createNativeBaseButton: function (key, size='md', title='button') {
         if (key === null) key = size
         return `<Button key={'${key}'} size={'${size}'}>
                     ${title}
                 </Button>`
+    },
+
+    createPicker: function (state, pickerOptions) {
+        //pickerOptions is an array, for example: ['primary', 'secondary', 'third']
+        var code = `<HStack space={5}>
+              <Text>My Picker</Text>
+              <RNPickerSelect
+                  onValueChange={(value) => { this.setState({ ${state}: value }) }}
+                  items={${pickerOptions.map(item => {
+                      return `{label: '${item}', value: '${item}'}`
+                   }).join('\n')}}
+              />
+            </HStack>`
     }
 }
