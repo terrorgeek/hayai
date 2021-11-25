@@ -13,6 +13,7 @@ const SpecialKeyWords = {
 const SpecialKeyWords = {
     getClosestMeaningOfWord: function (state, states) {
         //Find the closest meaning
+        states = states.filter(e => e != state)
         let response = await axios.post(Constants.SearchBaseUrl, {
             "documents": states,
             "query": state
@@ -27,11 +28,12 @@ const SpecialKeyWords = {
             var index = 0
             for (var i = 0; i < response["data"].length; i++) {
                 if (response["data"][i]["score"] > highestScore) {
+                    console.log(response["data"][i]["score"]);
                     highestScore = response["data"][i]["score"]
                     index = i
                 }
             }
-            closestMeaningWord = states[i]
+            closestMeaningWord = states[index]
         }
         closestMeaningWord = closestMeaningWord || state
         //If we dont find any cloest meaning, we just return the state
