@@ -1,4 +1,4 @@
-const ComponentGenerator = required("../SharedUtils/ComponentGenerator")
+const ComponentGenerator = require("../SharedUtils/ComponentGenerator")
 const axios = require('axios')
 const Constants = require('../Constants')
 
@@ -10,8 +10,8 @@ const SpecialKeyWords = {
     picker: ['year', 'month', 'weekday', 'day', 'states'],
 }
 
-const SpecialKeyWords = {
-    getClosestMeaningOfWord: function (state, states) {
+const SpecialStatesHandler = {
+    getClosestMeaningOfWord: async function (state, states) {
         //Find the closest meaning
         states = states.filter(e => e != state)
         let response = await axios.post(Constants.SearchBaseUrl, {
@@ -55,7 +55,7 @@ const SpecialKeyWords = {
         return state.includes('-')
     },
 
-    handleUserCustomState: function (stateString, states) {
+    handleUserCustomState: function (stateString) {
         //The correct format of stateString must be: state name-type-names
         //For example: 
         //insurance-radio-primary-secondary-third
@@ -123,4 +123,4 @@ const SpecialKeyWords = {
     }
 }
 
-module.exports = SpecialKeyWords
+module.exports = SpecialStatesHandler

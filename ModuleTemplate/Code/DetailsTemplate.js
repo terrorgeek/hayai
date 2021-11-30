@@ -1,6 +1,6 @@
 const ModulesToBeImported = require("./ModulesToBeImported");
 const ComponentGenerator = require("../../SharedUtils/ComponentGenerator");
-const SpecialStateHandler = require("../SpecialStateHandler");
+const SpecialStatesHandler = require("../SpecialStatesHandler");
 var _ = require("lodash");
 
 module.exports = {
@@ -9,7 +9,9 @@ module.exports = {
               constructor(props) {
                   super(props)
                   this.state = { 
-                      ${states.map((state) => `${state}: null,`).join("\n")}
+                      ${states.map((state) => {
+                        if (!state.includes('-')) return `${state}: null,`
+                      }).join("\n")}
                   }    
               }
         `;
@@ -34,7 +36,8 @@ module.exports = {
   statesCorrespondingMethods: function (states) {
     const code = [];
     for (const state of states) {
-      code.push(`on${_.upperFirst(state)}Changed = (text) => {
+      if (SpecialStatesHandler.isSpecialState(state) || SpecialStatesHandler.isUserCustomState(state)) continue
+      else code.push(`on${_.upperFirst(state)}Changed = (text) => {
                 this.setState({ ${state}: text })
             }`);
     }
@@ -44,11 +47,20 @@ module.exports = {
   renderComponents: function (states) {
     const code = [];
     for (const state of states) {
-      var specialState = SpecialStateHandler.isSpecialState(state)
-      if (specialState) {
-        const specialStateComponent = SpecialStateHandler.handleSpecialState(state, states, specialState['type'], specialState['keyword'])
+      var specialState = SpecialStatesHandler.isSpecialState(state)
+      var isUserCustomState = SpecialStatesHandler.isUserCustomState(state)
+      if (isUserCustomState) {
+        //In this case the state should be like "insurance-picker-primary-secondary-third"
+        const userCustomStateComponent = SpecialStatesHandler.handleUserCustomState(state)
+        if (userCustomStateComponent === null) {
+          code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)))
+        }
+        else code.push(userCustomStateComponent)
+      }
+      else if (specialState) {
+        const specialStateComponent = SpecialStatesHandler.handleSpecialState(state, states, specialState['type'], specialState['keyword'])
         if (specialStateComponent === null) {
-          //handle -, _ or +
+          code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)))
         }
         else code.push(specialStateComponent)
       }

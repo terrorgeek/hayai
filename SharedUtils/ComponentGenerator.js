@@ -77,7 +77,7 @@ module.exports = {
     createPicker: function (state, pickerOptions) {
         //pickerOptions is an array, for example: ['primary', 'secondary', 'third']
         return `<HStack space={5}>
-              <Text>My Picker</Text>
+              <Text>Select ${state}</Text>
               <RNPickerSelect
                   onValueChange={(value) => { this.setState({ ${state}: value }) }}
                   items={${pickerOptions.map(item => {
