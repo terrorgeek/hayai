@@ -50,6 +50,23 @@ module.exports = {
         `
     },
 
+    createNativeBaseCheckbox: function (state, items) {
+        return ` <VStack space={6}>
+                    ${items.map(item => {
+                        return `<HStack space={3}>
+                                    <Text>${item}</Text>
+                                    <Checkbox value="${item}" onChange={(checked) => {
+                                        var currentState = this.state.${state}
+                                        currentState ||= {}
+                                        if (checked) { currentState["${item}"] = true }
+                                        else { currentState["${item}"] = false }
+                                        this.setState({ ${state}: currentState })
+                                    }} />
+                                </HStack>`
+                    })}
+                </VStack>`
+    },
+
     createNativeBaseButton: function (key, size='md', title='button') {
         if (key === null) key = size
         return `<Button key={'${key}'} size={'${size}'}>

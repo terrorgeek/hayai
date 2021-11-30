@@ -52,18 +52,32 @@ const SpecialKeyWords = {
     },
 
     isUserCustomState: function (state) {
-        //-, _, +
-        const charList = ['-', '_', '+']
-        for (const char in charList) {
-            if (state.includes(char)) {
-                return char
-            }
-        }
-        return false
+        return state.includes('-')
     },
 
-    handleUserCustomState: function (char, state, states) {
-        
+    handleUserCustomState: function (stateString, states) {
+        //The correct format of stateString must be: state name-type-names
+        //For example: 
+        //insurance-radio-primary-secondary-third
+        //insurance-picker-primary-secondary-third
+        var array = stateString.split('-')
+        var code = null
+        if (array.length > 2) {
+            const state = array[0]
+            const type = array[1]
+            const items = array.slice(2)
+            if (type.includes('picker')) {
+                code = ComponentGenerator.createPicker(state, items)
+            }
+            else if (type.includes('radio')) {
+                code = ComponentGenerator.createNativeBaseRadioInput(`Select ${state}`, items, state)
+            }
+            else if (type.includes('checkbox')) {
+                code = ComponentGenerator.createNativeBaseCheckbox(state, items)
+            }
+            return code
+        }
+        return null
     },
 
     handleSpecialState: async function (state, states, type, keyword) {
