@@ -51,17 +51,19 @@ const SpecialKeyWords = {
         return false
     },
 
-    handleUserCustomState: function (state, states) {
+    isUserCustomState: function (state) {
         //-, _, +
-        if (state.includes('-')) {
-            
+        const charList = ['-', '_', '+']
+        for (const char in charList) {
+            if (state.includes(char)) {
+                return char
+            }
         }
-        else if (state.includes('_')) {
+        return false
+    },
 
-        }
-        else if (state.includes('+')) {
-            
-        }
+    handleUserCustomState: function (char, state, states) {
+        
     },
 
     handleSpecialState: async function (state, states, type, keyword) {
