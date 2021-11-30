@@ -31,18 +31,18 @@ function activate(context) {
         .split(":")[1];
 
       const htmlContent = `<!DOCTYPE html>
-	  <html lang="en">
-	  <head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>Document</title>
-		<link rel="stylesheet" href="app.css" />
-	  </head>
-	  <body>
-		<script src="app.js"></script>
-	  </body>
-	  </html>`;
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <link rel="stylesheet" href="app.css" />
+        </head>
+        <body>
+        <script src="app.js"></script>
+        </body>
+        </html>`;
 
       fs.writeFile(path.join(folderPath, "index.html"), htmlContent, (err) => {
         if (err) {
@@ -56,9 +56,7 @@ function activate(context) {
   );
 
   //2, insert a code snipt in an active editor tab for whereever your cursor is
-  let disposable2 = vscode.commands.registerCommand(
-    "hayai.insertBubbleSort",
-    async function () {
+  let disposable2 = vscode.commands.registerCommand("hayai.insertBubbleSort", async function () {
       if (!vscode.workspace) {
         return vscode.window.showErrorMessage(
           "Please open a project folder first"
@@ -81,18 +79,14 @@ function activate(context) {
   );
 
   //3, open a dialog and input whatever you want, and insert a code snipt by importin a node module
-  let disposable3 = vscode.commands.registerCommand(
-    "hayai.createModule",
-    async function () {
+  let disposable3 = vscode.commands.registerCommand("hayai.createModule", async function () {
       if (!vscode.workspace) {
         return vscode.window.showErrorMessage(
           "Please open a project folder first"
         );
       }
 
-      const workspaceFolders = vscode.workspace.workspaceFolders[0].uri
-        .toString()
-        .split(":")[1];
+      const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
 
       const input = await vscode.window.showInputBox({
         placeHolder: "Put the class name and its states here...",
@@ -116,13 +110,11 @@ function activate(context) {
     }
   );
 
-  let disposable4 = vscode.commands.registerCommand(
-    "hayai.test",
-    async function () {
+  let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
       FileFolderUtils.getFolders();
       const terminal = vscode.window.createTerminal(`yusong`);
-	  terminal.sendText("ls");
-	  terminal.sendText("date");
+	    terminal.sendText("ls");
+	    terminal.sendText("date");
       terminal.show();
     }
   );

@@ -1,5 +1,6 @@
 const ModulesToBeImported = require("./ModulesToBeImported");
 const ComponentGenerator = require("../../SharedUtils/ComponentGenerator");
+const SpecialStateHandler = require("../SpecialStateHandler");
 var _ = require("lodash");
 
 module.exports = {
@@ -43,7 +44,17 @@ module.exports = {
   renderComponents: function (states) {
     const code = [];
     for (const state of states) {
-      code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)));
+      var specialState = SpecialStateHandler.isSpecialState(state)
+      if (specialState) {
+        const specialStateComponent = SpecialStateHandler.handleSpecialState(state, states, specialState['type'], specialState['keyword'])
+        if (specialStateComponent === null) {
+          //handle -, _ or +
+        }
+        else code.push(specialStateComponent)
+      }
+      else {
+        code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)));
+      }
     }
     code.push(ComponentGenerator.createNativeBaseButton("md", "md", "Submit"));
     return `render() {
@@ -54,8 +65,7 @@ module.exports = {
                         </Stack>
                     </Center>
             </NativeBaseProvider>
-    }
-        `;
+    }`;
   },
 
   build: function (className, states) {
