@@ -63,22 +63,22 @@ module.exports = {
         //In this case the state should be like "insurance-picker-primary-secondary-third"
         const userCustomStateComponent = SpecialStatesHandler.handleUserCustomState(state)
         if (userCustomStateComponent === null) {
-          code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)))
+          code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state), state))
         }
         else code.push(userCustomStateComponent)
-        
+
       }
       else if (specialState) {
 
         const specialStateComponent = SpecialStatesHandler.handleSpecialState(state, states, specialState['type'], specialState['keyword'])
         if (specialStateComponent === null) {
-          code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)))
+          code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state), state))
         }
         else code.push(specialStateComponent)
 
       }
       else {
-        code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)));
+        code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state), state));
       }
     }
     code.push(ComponentGenerator.createNativeBaseButton("md", "md", "Submit"));
