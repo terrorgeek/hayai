@@ -22,8 +22,7 @@ module.exports = {
                       this.setState({ ${stateOpen}: false });
                     }}
                 />
-            </HStack>
-        `
+            </HStack>`
     },
 
     createNativeBaseRadioInput: function (title, items, state) {

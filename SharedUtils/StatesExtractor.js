@@ -12,7 +12,7 @@ module.exports = {
             "frequency_penalty": 0,
             "presence_penalty": 0,
             "stop": ["\n"]
-          }
+        }
         const options = {
             headers: {
                 "Content-Type": "application/json",

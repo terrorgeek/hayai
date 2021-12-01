@@ -1,5 +1,5 @@
 const ComponentGenerator = require("../SharedUtils/ComponentGenerator")
-const axios = require('axios')
+const axios = require('axios');
 const Constants = require('../Constants')
 
 const SpecialKeyWords = {
@@ -10,26 +10,31 @@ const SpecialKeyWords = {
     picker: ['year', 'month', 'weekday', 'day', 'states'],
 }
 
-const SpecialStatesHandler = {
-    getClosestMeaningOfWord: async function (state, states) {
+module.exports = {
+    getClosestMeaningOfWord: async function(state, states) {
         //Find the closest meaning
         states = states.filter(e => e != state)
-        let response = await axios.post(Constants.SearchBaseUrl, {
+        const data = {
             "documents": states,
             "query": state
-        }, { headers: {
-                'Content-Type': 'text/json',
-                'Authorization': `Bearer ${Constants.OpenAIAPIKey}`
+        }
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${Constants.OpenAIAPIKey}`
             }
-        })
+        }
+        const res = await axios.post(`${Constants.SearchBaseUrl}`, data, options)
+
         var closestMeaningWord = null;
-        if (response["data"]) {
-            var highestScore = response["data"][0]["score"]
+        if (res.data && res.data.data) {
+            const codexData = res.data.data
+            var highestScore = codexData[0]["score"]
             var index = 0
-            for (var i = 0; i < response["data"].length; i++) {
-                if (response["data"][i]["score"] > highestScore) {
-                    console.log(response["data"][i]["score"]);
-                    highestScore = response["data"][i]["score"]
+            for (var i = 0; i < codexData.length; i++) {
+                if (codexData[i]["score"] > highestScore) {
+                    console.log(codexData[i]["score"]);
+                    highestScore = codexData[i]["score"]
                     index = i
                 }
             }
@@ -122,5 +127,3 @@ const SpecialStatesHandler = {
         return null
     }
 }
-
-module.exports = SpecialStatesHandler
