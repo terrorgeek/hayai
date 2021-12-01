@@ -4,13 +4,20 @@ const SpecialStatesHandler = require("../SpecialStatesHandler");
 var _ = require("lodash");
 
 module.exports = {
+  getStateName: function (state) {
+    if (state.includes('-')) {
+      const arr = state.split('-')
+      return arr[0]
+    }
+    else return state
+  },
   statesInConstructor: function (states) {
     const code = `
               constructor(props) {
                   super(props)
                   this.state = { 
                       ${states.map((state) => {
-                        if (!state.includes('-')) return `${state}: null,`
+                        return `${this.getStateName(state)}: null,`
                       }).join("\n")}
                   }    
               }
@@ -22,11 +29,12 @@ module.exports = {
     const code = `
             componentDidMount() {
                 axios.get('').then(res => {
+                    const data = res.data\n
                     ${states
                       .map((state) => {
-                        `this.setState({ ${state}: res.${state} })`;
-                      })
-                      .join("\n")}
+                        const filteredState = this.getStateName(state)
+                        return `this.setState({ ${filteredState}: data.${filteredState} })`;
+                      }).join("\n")}
                 })
             }
         `;
@@ -47,8 +55,10 @@ module.exports = {
   renderComponents: function (states) {
     const code = [];
     for (const state of states) {
+
       var specialState = SpecialStatesHandler.isSpecialState(state)
       var isUserCustomState = SpecialStatesHandler.isUserCustomState(state)
+
       if (isUserCustomState) {
         //In this case the state should be like "insurance-picker-primary-secondary-third"
         const userCustomStateComponent = SpecialStatesHandler.handleUserCustomState(state)
@@ -56,13 +66,16 @@ module.exports = {
           code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)))
         }
         else code.push(userCustomStateComponent)
+        
       }
       else if (specialState) {
+
         const specialStateComponent = SpecialStatesHandler.handleSpecialState(state, states, specialState['type'], specialState['keyword'])
         if (specialStateComponent === null) {
           code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)))
         }
         else code.push(specialStateComponent)
+
       }
       else {
         code.push(ComponentGenerator.createNativeBaseInput("outline", _.upperFirst(state)));

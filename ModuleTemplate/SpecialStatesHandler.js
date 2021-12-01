@@ -42,7 +42,7 @@ const SpecialStatesHandler = {
 
     isSpecialState: function (state) {
         for (const property in SpecialKeyWords) {
-            for (const keyword of property) {
+            for (const keyword of SpecialKeyWords[property]) {
                 if (state.includes(keyword)) {
                     return { 'type': property, 'keyword': keyword }
                 }

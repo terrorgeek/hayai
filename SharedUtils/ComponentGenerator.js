@@ -1,6 +1,6 @@
 module.exports = {
-    createNativeBaseInput: function (variant='outline', placeholder='Placeholder') {
-        return `<Input variant="${variant}" placeholder="${placeholder}" />`
+    createNativeBaseInput: function (variant='outline', placeholder='Placeholder', state) {
+        return `<Input variant="${variant}" placeholder="${placeholder}" value={this.state.${state}} onChangeText={text => this.setState({${state}: text}) } />`
     },
 
     createNativeBaseDateTimeInput: function(placeholder, buttonTitle, mode, stateDate, stateOpen) {
@@ -80,9 +80,9 @@ module.exports = {
               <Text>Select ${state}</Text>
               <RNPickerSelect
                   onValueChange={(value) => { this.setState({ ${state}: value }) }}
-                  items={${pickerOptions.map(item => {
+                  items={[${pickerOptions.map(item => {
                       return `{label: '${item}', value: '${item}'}`
-                   }).join('\n')}}
+                   }).join('\n,')}]}
               />
             </HStack>`
     }
