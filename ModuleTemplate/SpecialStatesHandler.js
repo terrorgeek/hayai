@@ -12,6 +12,7 @@ const SpecialKeyWords = {
 }
 
 module.exports = {
+    extraStatesRequirements: ['date', 'time', 'datetime'],
     getClosestMeaningOfWord: async function(state, states) {
         //Find the closest meaning
         states = states.filter(e => e != state)
@@ -53,7 +54,7 @@ module.exports = {
     isSpecialState: function (state) {
         for (const property in SpecialKeyWords) {
             for (const keyword of SpecialKeyWords[property]) {
-                if (state.includes(keyword)) {
+                if (state.includes(keyword) && !state.includes('-')) {
                     return { 'type': property, 'keyword': keyword }
                 }
             }

@@ -1,14 +1,16 @@
 const _ = require('lodash');
+const moment = require('moment');
 
 module.exports = {
     createNativeBaseInput: function (variant='outline', placeholder='Placeholder', state) {
         return `<Input variant="${variant}" placeholder="${placeholder}" value={this.state.${state}} onChangeText={text => this.setState({${state}: text}) } />`
     },
 
-    createNativeBaseDateTimeInput: function(placeholder, buttonTitle, mode, stateDate, stateOpen) {
+    createNativeBaseDateTimeInput: function (placeholder, buttonTitle, mode, stateDate, stateOpen) {
+        const inputBoxDateTimeFormats = {'date': 'MM/DD/YYYY', 'datetime': 'MM/DD/YYYY HH:mm:ss', 'time': 'HH:mm:ss'}
         return `
-            <HStack space={3} alignItems="center">
-                <Input variant="outline" placeholder="${placeholder}" value={this.state.${stateDate}.toString()} />
+            <HStack space={3} alignItems="center" justifyContent="center">
+                <Input variant="outline" placeholder="${placeholder}" value={moment(this.state.${stateDate}).format('${inputBoxDateTimeFormats[mode]}')} />
                 <Button key={'md'} size={'md'} onPress={ () => this.setState({ ${stateOpen}: true }) }>
                     ${buttonTitle}
                 </Button>

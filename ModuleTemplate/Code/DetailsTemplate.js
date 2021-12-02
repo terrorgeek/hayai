@@ -13,13 +13,11 @@ module.exports = {
   },
   
   newStatesNames: function (states) {
-    const extraStatesRequirements = ['date', 'time', 'datetime']
     var newStates = []
     for (const state of states) {
-      newStates.push(state)
       const isSpecialState = SpecialStatesHandler.isSpecialState(state)
       if (isSpecialState) {
-        if (extraStatesRequirements.includes(isSpecialState['type'])) {
+        if (SpecialStatesHandler.extraStatesRequirements.includes(isSpecialState['type'])) {
           newStates.push(SpecialStatesHandler.extraBooleanStateForDateTimePicker(state))
         }
       }
@@ -28,14 +26,24 @@ module.exports = {
   },
 
   statesInConstructor: function (states) {
+    var stateInitCode = []
+    for (const state of states) {
+      const isSpecialState = SpecialStatesHandler.isSpecialState(state)
+      if (isSpecialState && SpecialStatesHandler.extraStatesRequirements.includes(isSpecialState['type'])) {
+        stateInitCode.push(`${state}: new Date()`)
+      }
+      else {
+        stateInitCode.push(`${this.getStateName(state)}: null`)
+      }
+    }
     const newStates = this.newStatesNames(states)
+    newStates.map(newState => { stateInitCode.push(`${newState}: null`) })
+
     const code = `
               constructor(props) {
                   super(props)
                   this.state = { 
-                      ${newStates.map((state) => {
-                        return `${this.getStateName(state)}: null,`
-                      }).join("\n")}
+                      ${stateInitCode.join("\n,")}
                   }    
               }
         `;
