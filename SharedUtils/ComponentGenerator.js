@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const moment = require('moment');
 
 module.exports = {
     createNativeBaseInput: function (variant='outline', placeholder='Placeholder', state) {

@@ -25,7 +25,6 @@ module.exports = {
                 content = DetailsTemplate.build(className, states);
             }
             FileFolderUtils.writeFile(`${moduleFolderName}`, `${file}.js`, content);
-            break
         }
     }
 }
