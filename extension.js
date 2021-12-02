@@ -7,6 +7,10 @@ const StatesExtractor = require("./SharedUtils/StatesExtractor");
 const FileFolderUtils = require("./SharedUtils/FileFolderUtils");
 const ConstructModule = require("./ModuleTemplate/ConstructModule");
 
+//Modules for setup the project
+const CommandsNeedToRun = require('./ProjectInitializer/CommandsNeedToRun')
+const FileFoldersGenerator = require('./ProjectInitializer/FileFoldersGenerator')
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 
@@ -16,20 +20,13 @@ const ConstructModule = require("./ModuleTemplate/ConstructModule");
 function activate(context) {
   console.log('Congratulations, your extension "hayai" is now active!');
   //1, insert a code snipt by string and create a file for it.
-  let disposable = vscode.commands.registerCommand(
-    "hayai.createBoilerplate",
-    async function () {
+  let disposable = vscode.commands.registerCommand("hayai.createBoilerplate", async function () {
       // The code you place here will be executed every time your command is executed
       if (!vscode.workspace) {
-        return vscode.window.showErrorMessage(
-          "Please open a project folder first"
-        );
+        return vscode.window.showErrorMessage("Please open a project folder first");
       }
 
-      const folderPath = vscode.workspace.workspaceFolders[0].uri
-        .toString()
-        .split(":")[1];
-
+      const folderPath = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
       const htmlContent = `<!DOCTYPE html>
         <html lang="en">
         <head>
@@ -46,9 +43,7 @@ function activate(context) {
 
       fs.writeFile(path.join(folderPath, "index.html"), htmlContent, (err) => {
         if (err) {
-          return vscode.window.showErrorMessage(
-            "Failed to create boilerplate file!"
-          );
+          return vscode.window.showErrorMessage("Failed to create boilerplate file!");
         }
         vscode.window.showInformationMessage("Created boilerplate files");
       });
@@ -58,9 +53,7 @@ function activate(context) {
   //2, insert a code snipt in an active editor tab for whereever your cursor is
   let disposable2 = vscode.commands.registerCommand("hayai.insertBubbleSort", async function () {
       if (!vscode.workspace) {
-        return vscode.window.showErrorMessage(
-          "Please open a project folder first"
-        );
+        return vscode.window.showErrorMessage("Please open a project folder first");
       }
 
       const activeEditor = vscode.window.activeTextEditor;
@@ -79,7 +72,7 @@ function activate(context) {
   );
 
   //3, open a dialog and input whatever you want, and insert a code snipt by importin a node module
-  let disposable3 = vscode.commands.registerCommand("hayai.createModule", async function () {
+  let createModuleCommandDisposable = vscode.commands.registerCommand("hayai.createModule", async function () {
       if (!vscode.workspace) {
         return vscode.window.showErrorMessage(
           "Please open a project folder first"
@@ -87,7 +80,6 @@ function activate(context) {
       }
 
       const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
-
       const input = await vscode.window.showInputBox({
         placeHolder: "Put the class name and its states here...",
         prompt: "Put the class name and its states here...",
@@ -95,20 +87,30 @@ function activate(context) {
       });
 
       if (!input || input.trim().length == 0) {
-        vscode.window.showErrorMessage(
-          "Please input something to make it work :)"
-        );
+        vscode.window.showErrorMessage("Please input something to make it work :)");
         return;
       }
-
       const data = await StatesExtractor.extractStates(input);
       const json = JSON.parse(data.choices[0].text.trim());
-      console.log(json);
+      console.log(`DEBUG: ${json}`);
       const className = json.className;
       const states = json.states;
       ConstructModule.assemblyLine(workspaceFolders, className, states);
     }
   );
+
+  let createSetUpFolderAndFilesDisposable = vscode.commands.registerCommand("hayai.createSetUpFolderAndFiles", async function () {
+    const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
+    const terminal = vscode.window.createTerminal(`hayai`);
+    FileFoldersGenerator.createConstantsFile(workspaceFolders)
+    for (const command of CommandsNeedToRun.yarnCommands) {
+      terminal.sendText(command)
+    }
+    for (const command of CommandsNeedToRun.podCommands) {
+      terminal.sendText(command)
+    }
+    terminal.show()
+  });
 
   let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
       FileFolderUtils.getFolders();
@@ -121,7 +123,8 @@ function activate(context) {
 
   context.subscriptions.push(disposable);
   context.subscriptions.push(disposable2);
-  context.subscriptions.push(disposable3);
+  context.subscriptions.push(createModuleCommandDisposable);
+  context.subscriptions.push(createSetUpFolderAndFilesDisposable);
   context.subscriptions.push(disposable4);
 }
 

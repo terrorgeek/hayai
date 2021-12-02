@@ -28,6 +28,10 @@
 				"title": "create a module"
 			},
 			{
+				"command": "hayai.createSetUpFolderAndFiles",
+				"title": "setup project"
+			},
+			{
 				"command": "hayai.test",
 				"title": "test"
 			}

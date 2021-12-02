@@ -22,7 +22,7 @@ module.exports = {
 			if (err) {
 				return vscode.window.showErrorMessage('Failed to create boilerplate file!');
 			}
-			vscode.window.showInformationMessage('Created medications boilerplate files');
+			vscode.window.showInformationMessage('Created boilerplate files');
 		});
     },
     createPackageDotJSONFile: function (folderPath, newFileName, name) {
