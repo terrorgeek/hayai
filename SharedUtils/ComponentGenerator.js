@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = {
     createNativeBaseInput: function (variant='outline', placeholder='Placeholder', state) {
         return `<Input variant="${variant}" placeholder="${placeholder}" value={this.state.${state}} onChangeText={text => this.setState({${state}: text}) } />`
@@ -26,8 +28,6 @@ module.exports = {
     },
 
     createNativeBaseRadioInput: function (title, items, state) {
-        //options should be like: 
-        //[{label: 'Male', value: 'M'}, {label: 'Female', value: 'F'}, ......]
         return `
             <HStack space={3} alignItems="center">
                 <Text>${title}: </Text>
@@ -39,10 +39,10 @@ module.exports = {
                 >
                     <HStack space={3} alignItems="center">
                         ${items.map(item => {
-                            return `<Radio value="${item.value}" my={1}>
-                               ${item.label}
+                            return `<Radio value="${item}" my={1}>
+                               ${item}
                             </Radio>`
-                         })}
+                         }).join('\n')}
                     </HStack>
                 </Radio.Group>
             </HStack>
@@ -51,6 +51,7 @@ module.exports = {
 
     createNativeBaseCheckbox: function (state, items) {
         return ` <VStack space={6}>
+                    <Text bold>${_.upperFirst(state)}:</Text>
                     ${items.map(item => {
                         return `<HStack space={3}>
                                     <Text>${item}</Text>
@@ -62,7 +63,7 @@ module.exports = {
                                         this.setState({ ${state}: currentState })
                                     }} />
                                 </HStack>`
-                    })}
+                    }).join('\n')}
                 </VStack>`
     },
 

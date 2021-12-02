@@ -11,12 +11,29 @@ module.exports = {
     }
     else return state
   },
+  
+  newStatesNames: function (states) {
+    const extraStatesRequirements = ['date', 'time', 'datetime']
+    var newStates = []
+    for (const state of states) {
+      newStates.push(state)
+      const isSpecialState = SpecialStatesHandler.isSpecialState(state)
+      if (isSpecialState) {
+        if (extraStatesRequirements.includes(isSpecialState['type'])) {
+          newStates.push(SpecialStatesHandler.extraBooleanStateForDateTimePicker(state))
+        }
+      }
+    }
+    return newStates
+  },
+
   statesInConstructor: function (states) {
+    const newStates = this.newStatesNames(states)
     const code = `
               constructor(props) {
                   super(props)
                   this.state = { 
-                      ${states.map((state) => {
+                      ${newStates.map((state) => {
                         return `${this.getStateName(state)}: null,`
                       }).join("\n")}
                   }    
@@ -30,8 +47,7 @@ module.exports = {
             componentDidMount() {
                 axios.get('').then(res => {
                     const data = res.data\n
-                    ${states
-                      .map((state) => {
+                    ${states.map((state) => {
                         const filteredState = this.getStateName(state)
                         return `this.setState({ ${filteredState}: data.${filteredState} })`;
                       }).join("\n")}

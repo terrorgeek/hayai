@@ -1,6 +1,7 @@
 const ComponentGenerator = require("../SharedUtils/ComponentGenerator")
 const axios = require('axios');
 const Constants = require('../Constants')
+const _ = require('lodash')
 
 const SpecialKeyWords = {
     date: ['date', 'dob', 'expire'],
@@ -45,6 +46,10 @@ module.exports = {
         return closestMeaningWord
     },
 
+    extraBooleanStateForDateTimePicker: function (state) {
+        return `is${_.upperFirst(state)}Open`
+    },
+
     isSpecialState: function (state) {
         for (const property in SpecialKeyWords) {
             for (const keyword of SpecialKeyWords[property]) {
@@ -80,29 +85,35 @@ module.exports = {
             else if (type.includes('checkbox')) {
                 code = ComponentGenerator.createNativeBaseCheckbox(state, items)
             }
+            else {
+                code = ComponentGenerator.createPicker(state, array.slice(1))
+            }
             return code
         }
         return null
     },
 
-    handleSpecialState: async function (state, states, type, keyword) {
+    handleSpecialState: function (state, states, type, keyword) {
         //The reason why we need all states is because we need to know some accessories state 
         //like isDateOfBirthPickerOpen
         if (type == 'date') {
-            const closestMeaningWord = this.getClosestMeaningOfWord(state, states)
-            return ComponentGenerator.createNativeBaseDateTimeInput(`Select ${state}`, `Pick ${state}`, 'date', state, closestMeaningWord)
+            //const closestMeaningWord = this.getClosestMeaningOfWord(state, states)
+            const switcherState = this.extraBooleanStateForDateTimePicker(state)
+            return ComponentGenerator.createNativeBaseDateTimeInput(`Select ${state}`, `Pick ${state}`, 'date', state, switcherState)
         }
         else if (type == 'time') {
-            const closestMeaningWord = this.getClosestMeaningOfWord(state, states)
-            return ComponentGenerator.createNativeBaseDateTimeInput(`Select ${state}`, `Pick ${state}`, 'time', state, closestMeaningWord)
+            //const closestMeaningWord = this.getClosestMeaningOfWord(state, states)
+            const switcherState = this.extraBooleanStateForDateTimePicker(state)
+            return ComponentGenerator.createNativeBaseDateTimeInput(`Select ${state}`, `Pick ${state}`, 'time', state, switcherState)
         }
         else if (type == 'datetime') {
-            const closestMeaningWord = this.getClosestMeaningOfWord(state, states)
-            return ComponentGenerator.createNativeBaseDateTimeInput(`Select ${state}`, `Pick ${state}`, 'datetime', state, closestMeaningWord)
+            //const closestMeaningWord = this.getClosestMeaningOfWord(state, states)
+            const switcherState = this.extraBooleanStateForDateTimePicker(state)
+            return ComponentGenerator.createNativeBaseDateTimeInput(`Select ${state}`, `Pick ${state}`, 'datetime', state, switcherState)
         }
         else if (type == 'radio') {
             if (keyword == 'gender') {
-                const genders = [{ label: 'Male', value: 'M' }, { label: 'Female', value: 'F' }]
+                const genders = ['Male', 'Female']
                 return ComponentGenerator.createNativeBaseRadioInput('Select Gender', genders, state)
             }
         }
