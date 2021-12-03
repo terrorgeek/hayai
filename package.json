@@ -24,12 +24,16 @@
 				"title": "insert bubble sort"
 			},
 			{
+				"command": "hayai.createSetUpFolderAndFiles",
+				"title": "setup project"
+			},
+			{
 				"command": "hayai.createModule",
 				"title": "create a module"
 			},
 			{
-				"command": "hayai.createSetUpFolderAndFiles",
-				"title": "setup project"
+				"command": "hayai.reconstructAsDrawer",
+				"title": "make project as drawer"
 			},
 			{
 				"command": "hayai.test",
