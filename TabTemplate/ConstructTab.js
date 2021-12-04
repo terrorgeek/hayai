@@ -1,23 +1,23 @@
 const FileFolderUtils = require('../SharedUtils/FileFolderUtils')
 
 module.exports = {
-    initDrawerAndStack: function () {
-        return `const Drawer = createDrawerNavigator();\n
+    initTabAndStack: function () {
+        return `const Tab = createBottomTabNavigator();\n
                 const Stack = createNativeStackNavigator();\n`
     },
 
-    constructDrawer: function(moduleNames) {
+    constructTab: function(moduleNames) {
         const components = moduleNames.map(name => {
-            return `<Drawer.Screen name="${name}Drawer" options={{title: "${name}"}} component={${name}Index} />`
+            return `<Tab.Screen name="${name}Tab" options={{title: "${name}"}} component={${name}Index} />`
         });
         const initialModule = `${moduleNames[0]}Drawer`;
 
         return `
-            function DrawerComponents() {
+            function TabsComponents() {
                 return (
-                    <Drawer.Navigator initialRouteName="${initialModule}">
+                    <Tab.Navigator initialRouteName="${initialModule}">
                        ${components.join('\n')}
-                    </Drawer.Navigator>
+                    </Tab.Navigator>
                 )
             }`;
     },
@@ -30,7 +30,7 @@ module.exports = {
             return (
                 <NavigationContainer>
                     <Stack.Navigator >
-                        <Stack.Screen name="Home" component={DrawerComponents} options={{ headerShown: false }} />
+                        <Stack.Screen name="Home" component={TabsComponents} options={{ headerShown: false }} />
                         ${components.join('\n')}
                     </Stack.Navigator>
                 </NavigationContainer>

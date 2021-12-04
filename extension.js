@@ -15,6 +15,8 @@ const FileFoldersGenerator = require('./ProjectInitializer/FileFoldersGenerator'
 
 //Modules for Drawer
 const DrawerBuilder = require('./DrawerTemplate/index')
+//Modules for Tab
+const TabBuilder = require('./TabTemplate/index')
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -123,6 +125,16 @@ function activate(context) {
     FileFolderUtils.writeFile(workspaceFolders, 'DrawerNavigator.js', code)
   })
 
+  //Construct the whole project modules as Tabs
+  let constructProjectAsTab = vscode.commands.registerCommand("hayai.reconstructAsTab", async function () {
+    if (!vscode.workspace) {
+      return vscode.window.showErrorMessage("Please open a project folder first");
+    }
+    const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
+    const code = TabBuilder.assemblyLine()
+    FileFolderUtils.writeFile(workspaceFolders, 'TabNavigator.js', code)
+  })
+
   let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
       FileFolderUtils.getFolders();
       const terminal = vscode.window.createTerminal(`yusong`);
@@ -136,6 +148,8 @@ function activate(context) {
   context.subscriptions.push(disposable2);
   context.subscriptions.push(createSetUpFolderAndFilesDisposable);
   context.subscriptions.push(createModuleCommandDisposable);
+  context.subscriptions.push(constructProjectAsDrawer);
+  context.subscriptions.push(constructProjectAsTab);
   context.subscriptions.push(disposable4);
 }
 

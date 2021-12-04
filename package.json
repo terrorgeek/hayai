@@ -36,6 +36,10 @@
 				"title": "make project as drawer"
 			},
 			{
+				"command": "hayai.reconstructAsTab",
+				"title": "make project as tabs"
+			},
+			{
 				"command": "hayai.test",
 				"title": "test"
 			}

@@ -17,7 +17,13 @@ module.exports = {
         })
         return folders
     },
-    writeFile: function (folderPath, newFileName, content) {
+    writeFile: function (folderPath, newFileName, content, override = true) {
+        if (fs.existsSync) {
+            if (override) { fs.unlinkSync(path.join(folderPath, newFileName)) }
+            else {
+                return vscode.window.showErrorMessage(`Failed to create because file already created.`);
+            }
+        }
         fs.writeFile(path.join(folderPath, newFileName), content, (err) => {
 			if (err) {
 				return vscode.window.showErrorMessage('Failed to create boilerplate file!');
@@ -25,6 +31,7 @@ module.exports = {
 			vscode.window.showInformationMessage('Created boilerplate files');
 		});
     },
+
     createPackageDotJSONFile: function (folderPath, newFileName, name) {
         //name is like "@utils" or so
         const content = `{
