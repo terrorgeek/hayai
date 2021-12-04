@@ -5,7 +5,7 @@ const fs = require('fs')
 
 module.exports = {
   createConstantsFile: function (workspaceRootPath) {
-    const workspaceSrcPath = `${workspaceRootPath}/${ProjectConstants.SrcFolderName}`
+    const workspaceSrcPath = `${workspaceRootPath}`
     const content = CodeForConstants.code.toString()
     if (!fs.existsSync(workspaceSrcPath)) 
       fs.mkdirSync(workspaceSrcPath)

@@ -14,7 +14,7 @@ const CommandsNeedToRun = require('./ProjectInitializer/CommandsNeedToRun')
 const FileFoldersGenerator = require('./ProjectInitializer/FileFoldersGenerator')
 
 //Modules for Drawer
-
+const DrawerBuilder = require('./DrawerTemplate/index')
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -119,7 +119,8 @@ function activate(context) {
       return vscode.window.showErrorMessage("Please open a project folder first");
     }
     const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
-
+    const code = DrawerBuilder.assemblyLine()
+    FileFolderUtils.writeFile(workspaceFolders, 'DrawerNavigator.js', code)
   })
 
   let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
