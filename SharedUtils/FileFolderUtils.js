@@ -18,7 +18,7 @@ module.exports = {
         return folders
     },
     writeFile: function (folderPath, newFileName, content, override = true) {
-        if (fs.existsSync) {
+        if (fs.existsSync(path.join(folderPath, newFileName))) {
             if (override) { fs.unlinkSync(path.join(folderPath, newFileName)) }
             else {
                 return vscode.window.showErrorMessage(`Failed to create because file already created.`);
