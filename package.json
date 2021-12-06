@@ -40,6 +40,10 @@
 				"title": "make project as tabs"
 			},
 			{
+				"command": "hayai.reconstructAsGrid",
+				"title": "make project as grid"
+			},
+			{
 				"command": "hayai.test",
 				"title": "test"
 			}

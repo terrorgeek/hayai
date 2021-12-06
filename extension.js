@@ -17,6 +17,8 @@ const FileFoldersGenerator = require('./ProjectInitializer/FileFoldersGenerator'
 const DrawerBuilder = require('./DrawerTemplate/index')
 //Modules for Tab
 const TabBuilder = require('./TabTemplate/index')
+//Modules for Grid
+const GridBuilder = require('./GridTemplate/index')
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -135,6 +137,16 @@ function activate(context) {
     FileFolderUtils.writeFile(workspaceFolders, 'TabNavigator.js', code)
   })
 
+  //Construct the whole project modules as Grid
+  let constructProjectAsGrid = vscode.commands.registerCommand("hayai.reconstructAsGrid", async function () {
+    if (!vscode.workspace) {
+      return vscode.window.showErrorMessage("Please open a project folder first");
+    }
+    const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
+    const code = GridBuilder.assemblyLine()
+    FileFolderUtils.writeFile(workspaceFolders, 'GridNavigator.js', code)
+  })
+
   let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
       FileFolderUtils.getFolders();
       const terminal = vscode.window.createTerminal(`yusong`);
@@ -150,6 +162,7 @@ function activate(context) {
   context.subscriptions.push(createModuleCommandDisposable);
   context.subscriptions.push(constructProjectAsDrawer);
   context.subscriptions.push(constructProjectAsTab);
+  context.subscriptions.push(constructProjectAsGrid);
   context.subscriptions.push(disposable4);
 }
 

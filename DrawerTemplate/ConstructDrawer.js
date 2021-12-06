@@ -1,5 +1,3 @@
-const FileFolderUtils = require('../SharedUtils/FileFolderUtils')
-
 module.exports = {
     initDrawerAndStack: function () {
         return `const Drawer = createDrawerNavigator();\n
