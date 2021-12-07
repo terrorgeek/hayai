@@ -30,10 +30,10 @@ module.exports = {
     },
 
     constructStack: function (moduleNames) {
-        var components = [`<StackNavigator.Screen name="GridIndex" component={GridComponents} />`]
-        components = moduleNames.map(name => {
+        var components = moduleNames.map(name => {
             return `<StackNavigator.Screen name="${name}Index" component={${name}Index} />`
         });
+        components.unshift(`<StackNavigator.Screen name="GridIndex" component={GridComponents} />`)
         return `export default function StackComponents() {
             return (
                 <NavigationContainer>
