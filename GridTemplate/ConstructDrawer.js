@@ -12,24 +12,26 @@ module.exports = {
         }).join('\n')
 
         return `
-            <Center flex={1}>
-                <Stack space={4} w={{ base: "90%", md: "25%" }}>
-                    <ScrollView
-                        _contentContainerStyle={{ px: "20px", mb: "4", minW: "72" }}
-                    >
-                        <Stack space={3} alignItems="center">
-                            <HStack space={3} alignItems="center">
-                                ${components}
-                            </HStack>
-                        </Stack>
-                    </ScrollView>
-                </Stack>
-            </Center>
-        `
+            function GridComponents() {
+                return <Center flex={1}>
+                    <Stack space={4} w={{ base: "90%", md: "25%" }}>
+                        <ScrollView
+                            _contentContainerStyle={{ px: "20px", mb: "4", minW: "72" }}
+                        >
+                            <Stack space={3} alignItems="center">
+                                <HStack space={3} alignItems="center">
+                                    ${components}
+                                </HStack>
+                            </Stack>
+                        </ScrollView>
+                    </Stack>
+                </Center>
+            }`
     },
 
     constructStack: function (moduleNames) {
-        const components = moduleNames.map(name => {
+        var components = [`<StackNavigator.Screen name="GridIndex" component={GridComponents} />`]
+        components = moduleNames.map(name => {
             return `<StackNavigator.Screen name="${name}Index" component={${name}Index} />`
         });
         return `export default function StackComponents() {
