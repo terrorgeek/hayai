@@ -93,9 +93,11 @@ function activate(context) {
 
   //Open a dialog and input whatever you want, and insert a code snipt by importing a node module
   let createModuleCommandDisposable = vscode.commands.registerCommand("hayai.createModule", async function () {
+  
     if (!vscode.workspace) {
       return vscode.window.showErrorMessage("Please open a project folder first");
     }
+
 
     const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
     const input = await vscode.window.showInputBox({

@@ -125,8 +125,7 @@ module.exports = {
               ${this.lifeCycleMethods(states)}
               ${this.statesCorrespondingMethods(states)}
               ${this.renderComponents(states)}
-          }
-        `;
+          }`;
     return code;
   },
 };

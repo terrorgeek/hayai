@@ -10,5 +10,9 @@ module.exports = {
         `import { Stack, HStack, VStack, Button, Input, Center, NativeBaseProvider, Radio, Checkbox, Text } from "native-base"`,
         `import RNPickerSelect from 'react-native-picker-select'`,
         `import DatePicker from 'react-native-date-picker'`
+    ],
+    IndexTemplateModules: [
+        `import * as React from "react";`,
+        `import { Box, Stack, Center, NativeBaseProvider, FlatList, Text} from "native-base";`
     ]
 }

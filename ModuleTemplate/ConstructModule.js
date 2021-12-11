@@ -5,6 +5,7 @@ const Constants = require('../Constants');
 
 //Code templates
 const DetailsTemplate = require('./Code/DetailsTemplate');
+const IndexTemplate = require('./Code/IndexTemplate');
 
 module.exports = {
     assemblyLine: function (workspaceRootPath, className, states) {
@@ -22,7 +23,10 @@ module.exports = {
         for (const file of filesNeedToBeCreated) {
             var content = '';
             if (file.includes('Details')) {
-                content = DetailsTemplate.build(className, states);
+                content = DetailsTemplate.build(className, states)
+            }
+            else if (file.includes('index')) {
+                content = IndexTemplate.build(className, states)
             }
             FileFolderUtils.writeFile(`${moduleFolderName}`, `${file}.js`, content);
         }
