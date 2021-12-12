@@ -68,9 +68,10 @@ module.exports = {
 
     handleUserCustomState: function (stateString) {
         //The correct format of stateString must be: state name-type-names
-        //For example: 
+        //For example:
         //insurance-radio-primary-secondary-third
         //insurance-picker-primary-secondary-third
+        //or insurance-primary-secondary-third
         var array = stateString.split('-')
         var code = null
         if (array.length > 2) {
