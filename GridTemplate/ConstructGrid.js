@@ -1,16 +1,25 @@
+const _ = require('lodash');
+
 module.exports = {
     initGridAndStack: function () {
         return `const StackNavigator = createNativeStackNavigator();\n`
     },
 
     constructGrid: function (moduleNames) {
-        const components = moduleNames.map(module => {
+        var componentGroups = _.chunk(moduleNames, 3)
+        const components = componentGroups.map(group => {
             return `
-            <TouchableOpacity onPress={() => navigation.navigate('${module}Index') }>
-                <Center h="100px" w="100px" bg="primary.500" rounded="md" shadow={3} px='1'>
-                    ${module}
-                </Center>
-            </TouchableOpacity>`
+            <HStack space={3} alignItems="center">
+              ${group.map(module => {
+                  return `
+                        <TouchableOpacity onPress={() => navigation.navigate('${module}Index') }>
+                            <Center h="100px" w="100px" bg="primary.500" rounded="md" shadow={3} px='1'>
+                                ${module}
+                            </Center>
+                        </TouchableOpacity>
+                        `
+               }).join('\n')}
+            </HStack>`
         }).join('\n')
 
         return `
@@ -20,9 +29,7 @@ module.exports = {
                         <Stack space={4} w={{ base: "90%", md: "25%" }}>
                             <ScrollView _contentContainerStyle={{ px: "20px", mb: "4", minW: "72" }} >
                                 <Stack space={3} alignItems="center">
-                                    <HStack space={3} alignItems="center">
-                                        ${components}
-                                    </HStack>
+                                    ${components}
                                 </Stack>
                             </ScrollView>
                         </Stack>

@@ -54,7 +54,7 @@ module.exports = {
     isSpecialState: function (state) {
         for (const property in SpecialKeyWords) {
             for (const keyword of SpecialKeyWords[property]) {
-                if (state.includes(keyword) && !state.includes('-')) {
+                if (_.lowerCase(state).includes(keyword) && !state.includes('-')) {
                     return { 'type': property, 'keyword': keyword }
                 }
             }
@@ -76,7 +76,7 @@ module.exports = {
         var code = null
         if (array.length > 2) {
             const state = array[0]
-            const type = array[1]
+            const type = _.lowerCase(array[1])
             const items = array.slice(2)
             if (type.includes('picker')) {
                 code = ComponentGenerator.createPicker(state, items)

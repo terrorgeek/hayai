@@ -7,8 +7,10 @@ module.exports = {
           ${ModulesToBeImported.IndexTemplateModules.join("\n")}
 
           const data = [{
+            id: 1,
             placeholder: 'placeholder'
           }, {
+            id: 2,
             placeholder: 'placeholder'
           }]
 
