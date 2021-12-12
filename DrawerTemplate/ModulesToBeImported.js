@@ -6,6 +6,7 @@ module.exports = {
         `import { createDrawerNavigator } from '@react-navigation/drawer';`,
         `import { NavigationContainer } from '@react-navigation/native';`,
         `import { createNativeStackNavigator } from '@react-navigation/native-stack';`,
+        `import { Button } from 'react-native'`
     ],
 
     //Also get the folder names as module under 'src'

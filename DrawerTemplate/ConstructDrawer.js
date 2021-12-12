@@ -6,12 +6,24 @@ module.exports = {
 
     constructDrawer: function(moduleNames) {
         const components = moduleNames.map(name => {
-            return `<Drawer.Screen name="${name}Drawer" options={{title: "${name}"}} component={${name}Index} />`
+            return `<Drawer.Screen 
+              name="${name}Drawer" 
+              options={{
+                  title: "${name}",
+                  headerRight: () => (
+                        <Button
+                            onPress={() => navigation.navigate('${name}Details')}
+                            title="Add"
+                        />
+                    )
+                }} 
+              component={${name}Index} 
+            />`
         });
         const initialModule = `${moduleNames[0]}Drawer`;
 
         return `
-            function DrawerComponents() {
+            function DrawerComponents({ navigation }) {
                 return (
                     <Drawer.Navigator initialRouteName="${initialModule}">
                        ${components.join('\n')}

@@ -24,7 +24,6 @@ module.exports = {
                           data={data}
                           renderItem={({ item }) => (
                             <Box borderBottomWidth="1" _dark={{ borderColor: "gray.600" }} borderColor="coolGray.200" pl="4" pr="5" py="2">
-                              
                               <Text>{item.placeholder}</Text>
                             </Box>
                           )}
@@ -34,7 +33,8 @@ module.exports = {
                     </Center>
                   </NativeBaseProvider>
                 );
-          }`;
+          }
+        }`;
     return code;
   }
 }

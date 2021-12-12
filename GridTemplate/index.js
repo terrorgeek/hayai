@@ -1,5 +1,5 @@
 const ModulesToBeImported = require('./ModulesToBeImported')
-const ConstructDrawer = require('./ConstructDrawer')
+const ConstructGrid = require('./ConstructGrid')
 const FileFolderUtils = require('../SharedUtils/FileFolderUtils')
 
 module.exports = {
@@ -8,9 +8,9 @@ module.exports = {
         const code = `
           ${ModulesToBeImported.basicModules.join('\n')}
           ${ModulesToBeImported.srcModules()}
-          ${ConstructDrawer.initGridAndStack(modules)}
-          ${ConstructDrawer.constructGrid(modules)}
-          ${ConstructDrawer.constructStack(modules)}
+          ${ConstructGrid.initGridAndStack(modules)}
+          ${ConstructGrid.constructGrid(modules)}
+          ${ConstructGrid.constructStack(modules)}
         `
         return code
     }
