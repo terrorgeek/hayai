@@ -20,6 +20,9 @@ const TabBuilder = require('./TabTemplate/index')
 //Modules for Grid
 const GridBuilder = require('./GridTemplate/index')
 
+//Reset the index.js each time the app structure changed
+const AppIndexReseter = require('./SharedUtils/AppIndexReseter')
+
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -126,7 +129,9 @@ function activate(context) {
     }
     const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
     const code = DrawerBuilder.assemblyLine()
+    const appIndexCode = AppIndexReseter.resetIndexFileCode('drawer')
     FileFolderUtils.writeFile(workspaceFolders, 'DrawerNavigator.js', code)
+    FileFolderUtils.writeFile(workspaceFolders, 'index.js', appIndexCode)
   })
 
   //Construct the whole project modules as Tabs
@@ -136,7 +141,9 @@ function activate(context) {
     }
     const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
     const code = TabBuilder.assemblyLine()
+    const appIndexCode = AppIndexReseter.resetIndexFileCode('tab')
     FileFolderUtils.writeFile(workspaceFolders, 'TabNavigator.js', code)
+    FileFolderUtils.writeFile(workspaceFolders, 'index.js', appIndexCode)
   })
 
   //Construct the whole project modules as Grid
@@ -146,7 +153,9 @@ function activate(context) {
     }
     const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
     const code = GridBuilder.assemblyLine()
+    const appIndexCode = AppIndexReseter.resetIndexFileCode('grid')
     FileFolderUtils.writeFile(workspaceFolders, 'GridNavigator.js', code)
+    FileFolderUtils.writeFile(workspaceFolders, 'index.js', appIndexCode)
   })
 
   let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
