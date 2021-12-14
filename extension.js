@@ -3,9 +3,11 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
+const _ = require('lodash');
 
 //Modules for creating modules
 const StatesExtractor = require("./SharedUtils/StatesExtractor");
+const Reconstructor = require("./SharedUtils/Reconstructor");
 const FileFolderUtils = require("./SharedUtils/FileFolderUtils");
 const ConstructModule = require("./ModuleTemplate/ConstructModule");
 
@@ -101,7 +103,6 @@ function activate(context) {
       return vscode.window.showErrorMessage("Please open a project folder first");
     }
 
-
     const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
     const input = await vscode.window.showInputBox({
       placeHolder: "Put the class name and its states here...",
@@ -157,6 +158,42 @@ function activate(context) {
     FileFolderUtils.writeFile(workspaceFolders, 'GridNavigator.js', code)
     FileFolderUtils.writeFile(workspaceFolders, 'index.js', appIndexCode)
   })
+  
+  //General reconstruct command
+  let generalReconstructCommand = vscode.commands.registerCommand("hayai.reconstructProject", async function () { 
+    if (!vscode.workspace) {
+      return vscode.window.showErrorMessage("Please open a project folder first");
+    }
+
+    const workspaceFolders = vscode.workspace.workspaceFolders[0].uri.toString().split(":")[1];
+    const input = await vscode.window.showInputBox({
+      placeHolder: "How you want to reconstruct project?",
+      prompt: "How you want to reconstruct project?",
+      value: "",
+    });
+
+    if (!input || input.trim().length == 0) {
+      vscode.window.showErrorMessage("Please input something to make it work :)");
+      return;
+    }
+    const types = ['grid', 'tab', 'drawer']
+    const data = await Reconstructor.reconstruct(input)
+    //It's already a string, so we dont have to use JSON.parse
+    const type = _.lowerCase(data.choices[0].text.trim());
+
+    if (!types.includes(type)) { 
+      vscode.window.showErrorMessage("Reconstruction type should be tab or drawer or grid");
+      return;
+    }
+
+    var code = null;
+    if (_.lowerCase(type) == 'grid') code = GridBuilder.assemblyLine()
+    else if (_.lowerCase(type) == 'tab') code = TabBuilder.assemblyLine()
+    else if (_.lowerCase(type) == 'drawer') code = DrawerBuilder.assemblyLine()
+    const appIndexCode = AppIndexReseter.resetIndexFileCode(type)
+    FileFolderUtils.writeFile(workspaceFolders, `${_.upperFirst(type)}Navigator.js`, code)
+    FileFolderUtils.writeFile(workspaceFolders, 'index.js', appIndexCode)
+  })
 
   let disposable4 = vscode.commands.registerCommand("hayai.test", async function () {
       FileFolderUtils.getFolders();
@@ -174,6 +211,7 @@ function activate(context) {
   context.subscriptions.push(constructProjectAsDrawer);
   context.subscriptions.push(constructProjectAsTab);
   context.subscriptions.push(constructProjectAsGrid);
+  context.subscriptions.push(generalReconstructCommand);
   context.subscriptions.push(disposable4);
 }
 

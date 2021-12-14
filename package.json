@@ -44,6 +44,10 @@
 				"title": "make project as grid"
 			},
 			{
+				"command": "hayai.reconstructProject",
+				"title": "reconstruct project"
+			},
+			{
 				"command": "hayai.test",
 				"title": "test"
 			}

@@ -5,7 +5,7 @@ Commands(cmd + shift + P), order matters:
   What is does?
   Using yarn to create required npm modules and do pod install in 'ios' folder and create Constants.js file
 2, create a module (using Codex)
-  What is does?
+  What it does?
   Create module based on what the app is doing.
   There are several ways to create module, basically you can just type in a prompt and Codex will figure out what module name and necessary states you need. Hayai will create all modules and necessary folder and files under 'src' folder.
 
