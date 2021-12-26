@@ -12,6 +12,7 @@ const SpecialKeyWords = {
 }
 
 module.exports = {
+    SpecialKeyWords: SpecialKeyWords,
     extraStatesRequirements: ['date', 'time', 'datetime'],
     getClosestMeaningOfWord: async function(state, states) {
         //Find the closest meaning

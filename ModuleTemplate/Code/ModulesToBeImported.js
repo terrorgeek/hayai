@@ -13,6 +13,6 @@ module.exports = {
     ],
     IndexTemplateModules: [
         `import * as React from "react";`,
-        `import { Box, Stack, Center, NativeBaseProvider, FlatList, Text} from "native-base";`
+        `import { Box, Stack, HStack, VStack, Center, NativeBaseProvider, FlatList, Text} from "native-base";`
     ]
 }

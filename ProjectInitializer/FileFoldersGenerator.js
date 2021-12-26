@@ -5,10 +5,10 @@ const fs = require('fs')
 
 module.exports = {
   createConstantsFile: function (workspaceRootPath) {
-    const workspaceSrcPath = `${workspaceRootPath}`
+    const workspaceSrcPath = `${workspaceRootPath}/src`
     const content = CodeForConstants.code.toString()
     if (!fs.existsSync(workspaceSrcPath)) 
       fs.mkdirSync(workspaceSrcPath)
-    FileFolderUtils.writeFile(workspaceSrcPath, `Constants.js`, content)
+    FileFolderUtils.writeFile(workspaceRootPath, `Constants.js`, content)
   }
 }
